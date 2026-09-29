@@ -4,7 +4,7 @@
 // Run with `npm run assets`; the output is committed.
 import { mkdir, writeFile } from "node:fs/promises";
 import sharp from "sharp";
-import { A_PATH, BAR_PATH, tileSvg } from "./brand-mark.mjs";
+import { MARK_PATH, tileSvg } from "./brand-mark.mjs";
 
 const INK = "#1f1f1f";
 const CARD = "#eeedec";
@@ -78,7 +78,7 @@ const SCENES = {
   coin: scene(
     shade("g", ball),
     `<circle cx="600" cy="338" r="240" fill="url(#g)"/><circle cx="600" cy="338" r="170" fill="#fff" opacity="0.85"/>
-     <circle cx="600" cy="338" r="130" fill="url(#g)"/><path d="${A_PATH}" transform="translate(504 242) scale(3)" fill="#fff"/><path d="${BAR_PATH}" transform="translate(504 242) scale(3)" fill="#fff"/>`,
+     <circle cx="600" cy="338" r="130" fill="url(#g)"/><path d="${MARK_PATH}" transform="translate(528 266) scale(2.25)" fill="#fff"/>`,
   ),
   bars: scene(
     linear("b", "#9a9a9a", "#141414"),
@@ -178,7 +178,7 @@ const SCENES = {
   seal: scene(
     shade("g", ball),
     `<circle cx="600" cy="338" r="250" fill="#2a2a2a"/><circle cx="600" cy="338" r="210" fill="#bbb"/><circle cx="600" cy="338" r="180" fill="url(#g)"/>
-     <path d="${A_PATH}" transform="translate(456 194) scale(4.5)" fill="#eee"/><path d="${BAR_PATH}" transform="translate(456 194) scale(4.5)" fill="#eee"/>`,
+     <path d="${MARK_PATH}" transform="translate(496 234) scale(3.25)" fill="#eee"/>`,
   ),
 };
 
@@ -211,12 +211,15 @@ const COVERS = [
 await mkdir("public/brand", { recursive: true });
 await mkdir("public/art", { recursive: true });
 
-// Icons
-await writeFile("src/app/icon.svg", tileSvg(64));
-await writeFile("public/brand/atlas-mark.svg", tileSvg(64));
-await writeFile("src/app/favicon.ico", ico(await Promise.all([16, 32, 48].map(async (size) => ({ size, data: await png(tileSvg(size), size) })))));
-await sharp(Buffer.from(tileSvg(180)), { density: 384 }).resize(180, 180).flatten({ background: PAPER }).png().toFile("src/app/apple-icon.png");
-await sharp(Buffer.from(tileSvg(512)), { density: 384 }).resize(512, 512).webp({ quality: 92 }).toFile("public/brand/atlas-icon.webp");
+// Icons. The favicon sizes carry the mark larger so it still reads at 16 px;
+// the 1024 px tile and banner in public/brand are the brand artwork itself.
+await writeFile("src/app/icon.svg", tileSvg(64, "#ffffff", "#000000", 44));
+await writeFile(
+  "public/brand/atlas-mark.svg",
+  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><path d="${MARK_PATH}" fill="#000" fill-rule="evenodd"/></svg>`,
+);
+await writeFile("src/app/favicon.ico", ico(await Promise.all([16, 32, 48].map(async (size) => ({ size, data: await png(tileSvg(size, "#ffffff", "#000000", 46), size) })))));
+await sharp(Buffer.from(tileSvg(180, "#ffffff", "#000000", 36)), { density: 384 }).resize(180, 180).flatten({ background: "#ffffff" }).png().toFile("src/app/apple-icon.png");
 
 // Covers (16:9) and a square hero globe.
 for (const name of COVERS) {
@@ -234,17 +237,15 @@ const globeSquare = scene(
 );
 await writeFile("public/art/hero-globe.webp", await dither(globeSquare, { w: 900, h: 900, cell: 11, bg: PAPER }));
 
-// Social card: dotted globe on the right, wordmark and slogan on the left.
-const globeCard = await dither(globeSquare, { w: 630, h: 630, cell: 7, bg: PAPER });
-const text = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="${PAPER}"/>
-  <g transform="translate(80 150)">${tileSvg(96).replace("<svg", "<svg x='0' y='0'")}</g>
-  <text x="80" y="330" font-family="Helvetica Neue, Arial, sans-serif" font-size="76" font-weight="600" letter-spacing="-3" fill="${INK}">Atlas Fund</text>
-  <text x="80" y="390" font-family="Helvetica Neue, Arial, sans-serif" font-size="25" fill="#363636">Discipline, Automation, Transparency.</text>
-  <text x="80" y="520" font-family="Menlo, monospace" font-size="22" letter-spacing="3" fill="#72706b">$ATLAS · ROBINHOOD CHAIN</text>
+// Social card: the brand banner, widened onto its own ground, with the ticker line.
+const BANNER_GROUND = "#f6f6f6";
+const banner = await sharp("public/brand/atlas-banner.webp").resize(1200, 400).toBuffer();
+const footer = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="${BANNER_GROUND}"/>
+  <text x="600" y="560" text-anchor="middle" font-family="Menlo, monospace" font-size="22" letter-spacing="3" fill="#72706b">$ATLAS · ROBINHOOD CHAIN · DISCIPLINE, AUTOMATION, TRANSPARENCY</text>
 </svg>`;
-await sharp(Buffer.from(text))
-  .composite([{ input: globeCard, left: 560, top: 0 }])
+await sharp(Buffer.from(footer))
+  .composite([{ input: banner, left: 0, top: 70 }])
   .webp({ quality: 88 })
   .toFile("public/brand/og.webp");
 

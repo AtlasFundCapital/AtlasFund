@@ -62,7 +62,8 @@ Optional environment variables (put them in `.env.local`; nothing is required to
 
 Without them the public endpoint is used, with a second public endpoint as fallback.
 
-`npm run assets` regenerates the icons, social card and dotted illustrations.
+`npm run assets` regenerates the icons, the social card (built on `public/brand/atlas-banner.webp`) and the dotted
+illustrations. The mark, tile and banner in `public/brand/` are the brand artwork itself.
 
 ## Add the network to your wallet
 

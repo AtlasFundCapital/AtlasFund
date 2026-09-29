@@ -43,22 +43,22 @@ export default function BrandPage() {
         <div className="grid grid-cols-1 gap-2 md:grid-cols-3">
           <div className="card flex aspect-[16/10] flex-col items-center justify-center gap-3 p-6">
             <span className="flex items-center gap-3 text-ink">
-              <Mark className="size-12" />
+              <Mark className="size-10" />
               <span className="font-display text-[30px] tracking-[-0.06em]">Atlas Fund</span>
             </span>
             <p className="text-[12px] text-mute">Main lockup</p>
           </div>
           <div className="flex aspect-[16/10] flex-col items-center justify-center gap-3 rounded-lg bg-ink p-6">
             <span className="flex items-center gap-3 text-paper">
-              <Mark className="size-12" ink="#e8e7e5" paper="#1f1f1f" />
+              <Mark className="size-10" />
               <span className="font-display text-[30px] tracking-[-0.06em]">Atlas Fund</span>
             </span>
             <p className="text-[12px] text-paper/60">Reversed</p>
           </div>
           <div className="card flex aspect-[16/10] flex-col items-center justify-center gap-3 p-6">
-            <img src="/brand/atlas-icon.webp" alt="Atlas Fund tile" className="size-20" />
+            <img src="/brand/atlas-icon.webp" alt="Atlas Fund tile" className="size-20 rounded-lg ring-1 ring-ink/10" />
             <a href="/brand/atlas-icon.webp" download className="text-[12px] text-ink underline">
-              Tile, 512 px
+              Tile, 1024 px
             </a>
           </div>
         </div>
