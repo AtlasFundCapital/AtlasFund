@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CheckIcon } from "@/components/icons";
+import { BRAND } from "@/config/brand";
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
@@ -82,8 +83,8 @@ export function ContactForm({ initialTopic = "" }: { initialTopic?: string }) {
         <p className="text-[20px] font-medium text-ink">Everything checks out.</p>
         <p className="text-[14px] leading-relaxed text-body">
           The form is not connected to an inbox yet, so nothing was sent. Until it is, reach us on X at{" "}
-          <a className="underline" href="https://x.com/atlasfund" target="_blank" rel="noreferrer">
-            @atlasfund
+          <a className="underline" href={BRAND.x} target="_blank" rel="noreferrer">
+            {BRAND.xHandle}
           </a>
           .
         </p>

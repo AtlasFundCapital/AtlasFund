@@ -2,7 +2,7 @@
 
 **Discipline, Automation, Transparency.** Onchain asset management on Robinhood Chain.
 
-Website: https://atlasfund.capital · X: [@atlasfund](https://x.com/atlasfund) · Token: `$ATLAS`
+Website: https://atlasfund.capital · X: [@atlasfundx](https://x.com/atlasfundx) · Token: `$ATLAS`
 
 ## The problem
 

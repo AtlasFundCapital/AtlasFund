@@ -19,8 +19,8 @@ export const BRAND = {
   tagline: "Onchain asset management that answers to rules, not moods.",
   description:
     "Atlas Fund runs tokenised funds, automated vaults and treasury mandates on Robinhood Chain, with every rule written onchain and every position open to inspection.",
-  x: "https://x.com/atlasfund",
-  xHandle: "@atlasfund",
+  x: "https://x.com/atlasfundx",
+  xHandle: "@atlasfundx",
   /** Public GitHub link. Empty hides every GitHub link on the site. */
   github: "https://github.com/AtlasFundCapital/AtlasFund" as string,
   ca: CA,
